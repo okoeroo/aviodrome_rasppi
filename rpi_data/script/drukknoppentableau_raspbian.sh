@@ -137,67 +137,67 @@ echo "Initialized..."
 while [ true ]; do
 	PIN2=$(cat $GPIO2/value)
 	if [ $PIN2 -eq 1 ]; then
-		speel_tracks 1
+		speel_tracks 16
 	fi
 	PIN3=$(cat $GPIO3/value)
 	if [ $PIN3 -eq 1 ]; then
-		speel_tracks 2
+		speel_tracks 15
 	fi
 	PIN4=$(cat $GPIO4/value)
 	if [ $PIN4 -eq 1 ]; then
-		speel_tracks 3
+		speel_tracks 14
 	fi
 	PIN8=$(cat $GPIO8/value)
 	if [ $PIN8 -eq 1 ]; then
-		speel_tracks 4
+		speel_tracks 1
 	fi
 	PIN9=$(cat $GPIO9/value)
 	if [ $PIN9 -eq 1 ]; then
-		speel_tracks 5
+		speel_tracks 4
 	fi
 	PIN10=$(cat $GPIO10/value)
 	if [ $PIN10 -eq 1 ]; then
-		speel_tracks 6
+		speel_tracks 5
 	fi
 	PIN11=$(cat $GPIO11/value)
 	if [ $PIN11 -eq 1 ]; then
-		speel_tracks 7
+		speel_tracks 2
 	fi
 	PIN14=$(cat $GPIO14/value)
 	if [ $PIN14 -eq 1 ]; then
-		speel_tracks 8
+		speel_tracks 13
 	fi
 	PIN15=$(cat $GPIO15/value)
 	if [ $PIN15 -eq 1 ]; then
-		speel_tracks 9
+		speel_tracks 12
 	fi
 	PIN17=$(cat $GPIO17/value)
 	if [ $PIN17 -eq 1 ]; then
-		speel_tracks 10
+		speel_tracks 11
 	fi
 	PIN18=$(cat $GPIO18/value)
 	if [ $PIN18 -eq 1 ]; then
-		speel_tracks 11
+		speel_tracks 10
 	fi
 	PIN22=$(cat $GPIO22/value)
 	if [ $PIN22 -eq 1 ]; then
-		speel_tracks 12
+		speel_tracks 8
 	fi
 	PIN23=$(cat $GPIO23/value)
 	if [ $PIN23 -eq 1 ]; then
-		speel_tracks 13
+		speel_tracks 7
 	fi
 	PIN24=$(cat $GPIO24/value)
 	if [ $PIN24 -eq 1 ]; then
-		speel_tracks 14
+		speel_tracks 6
 	fi
 	PIN25=$(cat $GPIO25/value)
 	if [ $PIN25 -eq 1 ]; then
-		speel_tracks 15
+		speel_tracks 3
 	fi
 	PIN27=$(cat $GPIO27/value)
 	if [ $PIN27 -eq 1 ]; then
-		speel_tracks 16
+		speel_tracks 9
 	fi
 done
 

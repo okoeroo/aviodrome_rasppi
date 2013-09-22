@@ -1,5 +1,7 @@
 #!/bin/bash
 
+TRACKDIR="../audio"
+
 GPIO_EXPORT="/sys/class/gpio/export"
 GPIO2="/sys/class/gpio/gpio2"
 GPIO3="/sys/class/gpio/gpio3"
@@ -19,8 +21,28 @@ GPIO24="/sys/class/gpio/gpio24"
 GPIO25="/sys/class/gpio/gpio25"
 GPIO27="/sys/class/gpio/gpio27"
 
+apptester() {
+	PROG=$1
+
+	which $PROG >/dev/null 2>&1
+	RC=$?
+	if [ $RC -ne 0 ]; then
+		echo "Error: $PROG is niet geinstalleerd. Probeer: \"sudo apt-get install $PROG\"" >&2
+		exit 1
+	fi
+	return 0
+}
 
 initalize() {
+	# Check of het programma mplayer is geinstalleerd
+	apptester mplayer
+
+	# Check of de Track directory bestaat
+	if [ ! -d $TRACKDIR ]; then
+		echo "Error: directory \"$TRACKDIR\" bestaat niet."
+		exit 1
+	fi
+
 	echo "2" > $GPIO_EXPORT
 	echo "3" > $GPIO_EXPORT
 	echo "4" > $GPIO_EXPORT
@@ -69,26 +91,16 @@ speel_een_track() {
 speel_tracks() {
 	TRACKNR=$1
 
+	# Zoek een bestand, in de $TRACKDIR directory en met 
+	# de naam 'track', een nummer er aan vast geplakt, 
+	# gevolgt door een punt en elke extensie.
+	FILE=$(find $TRACKDIR -name track$TRACKNR\.*)
+	if [ -z "$FILE" ]; then
+		return
+	fi
+
 	echo "1" > $GPIO7/value
-	case $1 in
-		1) speel_een_track /tmp/track1.m4v ;;
-		2) speel_een_track /tmp/track2.m4v ;;
-		3) speel_een_track /tmp/track3.m4v ;;
-		4) speel_een_track /tmp/track4.m4v ;;
-		5) speel_een_track /tmp/track5.m4v ;;
-		6) speel_een_track /tmp/track6.m4v ;;
-		7) speel_een_track /tmp/track7.m4v ;;
-		8) speel_een_track /tmp/track8.m4v ;;
-		9) speel_een_track /tmp/track9.m4v ;;
-		10) speel_een_track /tmp/track10.m4v ;;
-		11) speel_een_track /tmp/track11.m4v ;;
-		12) speel_een_track /tmp/track12.m4v ;;
-		13) speel_een_track /tmp/track13.m4v ;;
-		14) speel_een_track /tmp/track14.m4v ;;
-		15) speel_een_track /tmp/track15.m4v ;;
-		16) speel_een_track /tmp/track16.m4v ;;
-		*) echo "Geen idee wat ik moet doen" ;;
-	esac
+	speel_een_track $FILE
 	echo "0" > $GPIO7/value
 }
 
@@ -96,6 +108,7 @@ debug() {
 	cat $GPIO2/value
 	cat $GPIO3/value
 	cat $GPIO4/value
+	cat $GPIO7/value
 	cat $GPIO8/value
 	cat $GPIO9/value
 	cat $GPIO10/value
@@ -109,13 +122,18 @@ debug() {
 	cat $GPIO24/value
 	cat $GPIO25/value
 	cat $GPIO27/value
+
+	exit 0
 }
 
+# Initializeer de porten en test op een paar dingen
 initalize
 echo "Initialized..."
-# debug
 
+# Debug de porten
+#debug
 
+# Loop oneindig over de pinnetjes heen, behalve nummer GPIO-7, want dat is de output
 while [ true ]; do
 	PIN2=$(cat $GPIO2/value)
 	if [ $PIN2 -eq 1 ]; then

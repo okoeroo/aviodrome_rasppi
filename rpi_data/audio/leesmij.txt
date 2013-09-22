@@ -1,0 +1,4 @@
+Zet hier bestanden neer met de naam "track", een nummer, een punt en een willekeurige extensie.
+Voorbeeld: track1.wav
+
+Ondersteunt track1.wav tot en met track16.wav 

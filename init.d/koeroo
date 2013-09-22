@@ -1,0 +1,50 @@
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Provides:          koeroo
+# Required-Start:    
+# Required-Stop:
+# X-Start-Before:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Start van scripts uit de derde partitie
+# Description: Start van scripts uit de derde partitie
+### END INIT INFO
+
+DIR="/media/rpi_data"
+SCRIPT_DIR="$DIR/script"
+BOOT_SCRIPT="$SCRIPT_DIR/boot.sh"
+
+set -e
+
+case "$1" in
+  start)
+	if [ ! -d $DIR ]; then
+		echo "Path $DIR doesn't exist" >&2
+		exit 1
+	fi
+	if [ ! -d $SCRIPT_DIR ]; then
+		echo "Path $SCRIPT_DIR doesn't exist" >&2
+		exit 1
+	fi
+	if [ ! -f $BOOT_SCRIPT ]; then
+		echo "Path $BOOT_SCRIPT doesn't exist" >&2
+		exit 1
+	fi
+
+	# Change dir to the script location
+	cd $SCRIPT_DIR
+
+	# Execute the boot script in the background
+	echo "[info] Koeroo: Start nu $BOOT_SCRIPT"
+	$BOOT_SCRIPT &
+	;;
+  stop|reload|restart|force-reload|status)
+	;;
+  *)
+	echo "Usage: /etc/init.d/koeroo {start|stop|restart|force-reload|status}" >&2
+	exit 1
+	;;
+esac
+
+exit 0
